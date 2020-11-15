@@ -3,8 +3,12 @@
  */
 package it.unibo.oop.lab.enum2;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import it.unibo.oop.lab.socialnetwork.SocialNetworkUserImpl;
 import it.unibo.oop.lab.socialnetwork.User;
+import static it.unibo.oop.lab.enum2.Place.*;
 
 /**
  * 
@@ -30,7 +34,7 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      * 
      * add a field to keep track of the set of sports followed/done by a user
      */
-
+	private final Set<Sport> sports;
     /**
      * Builds a new {@link Sport2SocialNetworkUserImpl}.
      * 
@@ -61,6 +65,7 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      */
     public Sport2SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
         super(name, surname, user, userAge);
+        this.sports= new HashSet<Sport>();
     }
 
     /*
@@ -75,7 +80,7 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      *            a sport followed/done by the user
      */
     public void addSport(final Sport sport) {
-
+    	this.sports.add(sport);
     }
 
     /**
@@ -87,7 +92,10 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      * @return true if user likes sport s
      */
     public boolean likesSport(final Sport s) {
-        return false;
+    	 if(this.sports.contains(s)) {
+          	return true;
+          }
+          return false;
     }
 
     /*
@@ -114,4 +122,27 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
     /*
      * public Set<Sport> getSportPracticedInPlace(Place p) { return null; }
      */
+    public Set<Sport> getIndividualSports() { 
+    	Set<Sport> individuals=new HashSet<Sport>();
+    	for ( Sport elem: sports) {
+    		if(elem.isIndividualSport()) {
+    			individuals.add(elem);
+    		}
+    	}
+    	return individuals;
+    }
+    
+    public Set<Sport> getSportPracticedInPlace(Place p){
+    	Set<Sport> places=new HashSet<Sport>();
+    	for ( Sport elem: sports) {
+    		if(elem.isIndoorSport() && p==INDOOR) {
+    			places.add(elem);
+    		}
+    		if(!elem.isIndoorSport() && p==OUTDOOR) {
+    			places.add(elem);
+    		}
+    	}
+    	return places;
+    }
+    
 }
